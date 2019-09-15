@@ -1,19 +1,33 @@
 import os
 from pydicom import dcmread
-from pynetdicom import AE, build_context
-from pynetdicom.sop_class import UltrasoundImageStorage
+from pydicom.uid import UID
+from pynetdicom import AE
+import logging
 
-# SCU
+logging.basicConfig(filename='pynetdicom.log', filemode='w',
+                    format='%(name)s - %(levelname)s - %(message)s')
+LOGGER = logging.getLogger('pynetdicom')
+LOGGER.setLevel(logging.DEBUG)
 
+
+#AEs & IP
 scu_ae = os.environ.get('AE_TITLE')
+dest_ae = os.environ.get('DEST_AE')
+dest_ip = os.environ.get('DEST_IP')
+print(scu_ae, dest_ae, dest_ip)
+
+
 ae = AE(ae_title=scu_ae)
-ae.add_requested_context(UltrasoundImageStorage)
+# this uid is for secondary image capture
+uid = UID('1.2.840.10008.5.1.4.1.1.7')
+ae.add_requested_context(uid)
 
 
-ds = dcmread('IM000001')
+ds = dcmread('tester2.dcm')
+
 
 # work in progress, still not working with PACS
-assoc = ae.associate('scu_ip', port, ae_title='aetitle')
+assoc = ae.associate(dest_ip, 5000, ae_title=dest_ae)
 
 if assoc.is_established:
     print('Associated')

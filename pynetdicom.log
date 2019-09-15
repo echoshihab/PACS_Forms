@@ -1,0 +1,60 @@
+pynetdicom.assoc - INFO - Requesting Association
+pynetdicom.events - DEBUG - Request Parameters:
+pynetdicom.events - DEBUG - ========================= BEGIN A-ASSOCIATE-RQ PDU =========================
+pynetdicom.events - DEBUG - Our Implementation Class UID:      1.2.826.0.1.3680043.9.3811.1.4.1
+pynetdicom.events - DEBUG - Our Implementation Version Name:   PYNETDICOM_141
+pynetdicom.events - DEBUG - Application Context Name:    1.2.840.10008.3.1.1.1
+pynetdicom.events - DEBUG - Calling Application Name:    MDB-ISIT-PC04   
+pynetdicom.events - DEBUG - Called Application Name:     LXATEST1        
+pynetdicom.events - DEBUG - Our Max PDU Receive Size:    16382
+pynetdicom.events - DEBUG - Presentation Context:
+pynetdicom.events - DEBUG -   Context ID:        1 (Proposed)
+pynetdicom.events - DEBUG -     Abstract Syntax: =Secondary Capture Image Storage
+pynetdicom.events - DEBUG -     Proposed SCP/SCU Role: Default
+pynetdicom.events - DEBUG -     Proposed Transfer Syntaxes:
+pynetdicom.events - DEBUG -       =Implicit VR Little Endian
+pynetdicom.events - DEBUG -       =Explicit VR Little Endian
+pynetdicom.events - DEBUG -       =Explicit VR Big Endian
+pynetdicom.events - DEBUG - Requested Extended Negotiation: None
+pynetdicom.events - DEBUG - Requested Common Extended Negotiation: None
+pynetdicom.events - DEBUG - Requested Asynchronous Operations Window Negotiation: None
+pynetdicom.events - DEBUG - Requested User Identity Negotiation: None
+pynetdicom.events - DEBUG - ========================== END A-ASSOCIATE-RQ PDU ==========================
+pynetdicom.events - DEBUG - Accept Parameters:
+pynetdicom.events - DEBUG - ========================= BEGIN A-ASSOCIATE-AC PDU =========================
+pynetdicom.events - DEBUG - Their Implementation Class UID:    1.2.840.114202.5.3.1
+pynetdicom.events - DEBUG - Their Implementation Version Name: IMS4-17-1-P288
+pynetdicom.events - DEBUG - Application Context Name:    1.2.840.10008.3.1.1.1
+pynetdicom.events - DEBUG - Calling Application Name:    MDB-ISIT-PC04   
+pynetdicom.events - DEBUG - Called Application Name:     LXATEST1        
+pynetdicom.events - DEBUG - Their Max PDU Receive Size:  16384
+pynetdicom.events - DEBUG - Presentation Contexts:
+pynetdicom.events - DEBUG -   Context ID:        1 (Accepted)
+pynetdicom.events - DEBUG -     Abstract Syntax: =Secondary Capture Image Storage
+pynetdicom.events - DEBUG -     Accepted SCP/SCU Role: Default
+pynetdicom.events - DEBUG -     Accepted Transfer Syntax: =Explicit VR Little Endian
+pynetdicom.events - DEBUG - Accepted Extended Negotiation: None
+pynetdicom.events - DEBUG - Accepted Asynchronous Operations Window Negotiation: None
+pynetdicom.events - DEBUG - User Identity Negotiation Response: None
+pynetdicom.events - DEBUG - ========================== END A-ASSOCIATE-AC PDU ==========================
+pynetdicom.acse - INFO - Association Accepted
+pynetdicom.events - INFO - Sending Store Request: MsgID 1
+pynetdicom.events - DEBUG - ========================== OUTGOING DIMSE MESSAGE ==========================
+pynetdicom.events - DEBUG - Message Type                  : C-STORE RQ
+pynetdicom.events - DEBUG - Message ID                    : 1
+pynetdicom.events - DEBUG - Affected SOP Class UID        : Secondary Capture Image Storage
+pynetdicom.events - DEBUG - Affected SOP Instance UID     : 1.3.6.1.4.1.23849.1394177094.11.1637038637959083360.2.2.1
+pynetdicom.events - DEBUG - Data Set                      : Present
+pynetdicom.events - DEBUG - Priority                      : Low
+pynetdicom.events - DEBUG - ============================ END DIMSE MESSAGE =============================
+pynetdicom.dsutils - DEBUG - pydicom.read_dataset() TransferSyntax="Little Endian Implicit"
+pynetdicom.events - INFO - Received Store Response
+pynetdicom.events - DEBUG - ========================== INCOMING DIMSE MESSAGE ==========================
+pynetdicom.events - DEBUG - Message Type                  : C-STORE RSP
+pynetdicom.events - DEBUG - Presentation Context ID       : 1
+pynetdicom.events - DEBUG - Message ID Being Responded To : 1
+pynetdicom.events - DEBUG - Affected SOP Class UID        : Secondary Capture Image Storage
+pynetdicom.events - DEBUG - Affected SOP Instance UID     : 1.3.6.1.4.1.23849.1394177094.11.1637038637959083360.2.2.1
+pynetdicom.events - DEBUG - DIMSE Status                  : 0x0000 - Success
+pynetdicom.events - DEBUG - ============================ END DIMSE MESSAGE =============================
+pynetdicom.assoc - INFO - Releasing Association
