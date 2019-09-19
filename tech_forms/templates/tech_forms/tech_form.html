@@ -4,7 +4,11 @@
 	<title>Tech Form</title>
 </head>
 <body>
-	This is a placeholder for the techform
+	<form>
+		{% csrf_token %}
+		{{ tech_note_form }}
+		<button type="submit">Submit Form </button>
+	</form>
 
 </body>
 </html>
