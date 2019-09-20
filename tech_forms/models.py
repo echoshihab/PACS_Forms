@@ -1,13 +1,5 @@
 from django.db import models
 
-MODALITY_CHOICES = [
-    ('US', 'Ultrasound'),
-    ('CR', 'X-ray'),
-    ('NM', 'Bone Densitometry'),
-    ('MG', 'Mammography'),
-
-]
-
 
 class TechNote(models.Model):
     patient_name = models.CharField(max_length=30)
@@ -20,4 +12,7 @@ class TechNote(models.Model):
 
 
 class Modality(models.Model):
-    modality_name = models.CharField(max_length=20, choices=MODALITY_CHOICES)
+    modality_name = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.modality_name

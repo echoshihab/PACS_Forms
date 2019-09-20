@@ -3,7 +3,7 @@ from .models import TechNote, Modality
 
 
 class TechNoteForm(ModelForm):
-    modality = ModelChoiceField(queryset=Modality.objects.all())
+    modality = ModelChoiceField(queryset=Modality.objects.all(), initial=0)
 
     class Meta:
         model = TechNote
