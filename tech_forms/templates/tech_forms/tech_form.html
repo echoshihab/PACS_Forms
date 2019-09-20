@@ -4,9 +4,9 @@
 	<title>Tech Form</title>
 </head>
 <body>
-	<form>
+	<form action="{% url 'tech_form_submit' %}" method="post" novalidate>
 		{% csrf_token %}
-		{{ tech_note_form }}
+		{{ form }}
 		<button type="submit">Submit Form </button>
 	</form>
 
