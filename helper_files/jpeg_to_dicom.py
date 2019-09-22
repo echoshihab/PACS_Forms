@@ -6,7 +6,7 @@ from pydicom.dataset import Dataset, FileDataset
 from pydicom.uid import UID
 
 
-def generate_dicom_from_image(image_file):
+def generate_dicom_from_image(image_file, **kwargs):
     suffix = '.dcm'
     filename_little_endian = tempfile.NamedTemporaryFile(suffix=suffix).name
     image_name = image_file
@@ -37,20 +37,20 @@ def generate_dicom_from_image(image_file):
     ds.StudyTime = '054219'
     ds.SeriesTime = '054219'
     ds.AcquisitionTime = '054316'
-    ds.AccessionNumber = ''
-    ds.Modality = 'OT'
+    ds.AccessionNumber = kwargs['accession']
+    ds.Modality = kwargs['modality']
     ds.ConversionType = 'WSD'
     ds.Manufacturer = 'PACSFORM'
     ds.InstitutionName = 'LXA'
     ds.ReferringPhysicianName = ''
     ds.StationName = 'DUN-DIUS-PC01'
-    ds.StudyDescription = 'PACS FORM'
+    ds.StudyDescription = kwargs['procedure']
     ds.SeriesDescription = 'PACS FORM'
     ds.InstitutionalDepartmentName = 'US'
-    ds.OperatorsName = ''
+    ds.OperatorsName = kwargs['tech_initials']
     ds.ManufacturerModelName = ''
-    ds.PatientName = 'TestShihab'
-    ds.PatientID = 'T00159'
+    ds.PatientName = kwargs['patient_name']
+    ds.PatientID = kwargs['patient_id']
     ds.PatientBirthDate = '19850112'
     ds.PatientSex = ''
     ds.BodyPartExamined = ''
@@ -83,6 +83,6 @@ def generate_dicom_from_image(image_file):
     return ds
 
 
-filename = input('Enter file name: ')
-output = generate_dicom_from_image(filename)
-output.save_as("tester2.dcm")
+#filename = input('Enter file name: ')
+#output = generate_dicom_from_image(filename)
+# output.save_as("tech_note.dcm")
