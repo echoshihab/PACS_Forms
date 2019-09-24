@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Query Worklist</title>
+</head>
+<body>
+	<form method="POST" action="{% url 'query_worklist' %}">
+		{% csrf_token %}
+		{{ form }}
+		
+		<button type="submit" name="submit">Query Worklist</button>
+	</form>
+
+{{ study_data }}
+
+{{ error }}
+
+</body>
+</html>

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import TechNoteForm
+from .forms import TechNoteForm, QueryWorklistForm
 from PIL import Image, ImageFont, ImageDraw
 from helper_files.jpeg_to_dicom import generate_dicom_from_image
 import textwrap
@@ -7,8 +7,8 @@ import os
 from pydicom import dcmread
 from pydicom.uid import UID
 from pynetdicom import AE
-
-
+from pydicom.dataset import Dataset
+from pynetdicom.sop_class import ModalityWorklistInformationFind
 # Create your views here.
 
 
@@ -96,3 +96,68 @@ def tech_form_submit(request):
         return render(request, 'tech_forms/form_submitted.html', context)
     else:
         return render(request, 'tech_forms/form_submitted.html', context)
+
+
+def query_worklist(request):
+
+    if request.method == 'POST':
+        accession = request.POST['accession']
+        print(accession)
+
+        # Query Worklist by accession
+        scu_ae = os.environ.get('AE_TITLE')
+
+        # SCU
+        ae = AE(ae_title=scu_ae)
+
+        ae.add_requested_context(ModalityWorklistInformationFind)
+
+        ds = Dataset()
+        ds.PatientName = '*'
+        ds.AccessionNumber = accession
+        ds.PatientID = ''
+        ds.StudyInstanceUID = ''
+        ds.QueryRetrieveLevel = 'STUDY'
+        ds.ScheduledProcedureStepSequence = [Dataset()]
+        item = ds.ScheduledProcedureStepSequence[0]
+        item.modality = 'US'
+
+        # associate with SCP
+        scp_ip = os.environ.get('SCP_IP')
+        scp_ae = os.environ.get('SCP_AE')
+        assoc = ae.associate(scp_ip, 5010, ae_title=scp_ae)
+
+        if assoc.is_established:
+            responses = assoc.send_c_find(
+                ds, ModalityWorklistInformationFind)
+
+            for(status, identifier) in responses:
+                if status:
+                    print(
+                        'C-FIND query status: 0x{0:04x}'.format(status.Status))
+                    if status.Status in (0xFF00, 0xFF01):
+                        study_data = identifier
+                        error = "No Errors"
+                else:
+                    error = "Connection timed out, was aborted or receieved invalid response"
+
+            assoc.release()
+        else:
+            study_data = 'Associated rejected, aborted or never connected'
+
+        context = {
+            'study_data': study_data,
+            'error': error
+        }
+
+        return render(request, 'tech_forms/query_worklist.html', context)
+
+    else:
+
+        form = QueryWorklistForm()
+
+        context = {
+            "form": form
+        }
+
+        return render(request, 'tech_forms/query_worklist.html', context)

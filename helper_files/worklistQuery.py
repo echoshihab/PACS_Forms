@@ -2,6 +2,12 @@ from pydicom.dataset import Dataset
 from pynetdicom import AE
 from pynetdicom.sop_class import ModalityWorklistInformationFind
 import os
+import logging
+
+logging.basicConfig(filename='pynetdicom_query.log', filemode='w',
+                    format='%(name)s - %(levelname)s - %(message)s')
+LOGGER = logging.getLogger('pynetdicom')
+LOGGER.setLevel(logging.DEBUG)
 
 scu_ae = os.environ.get('AE_TITLE')
 
@@ -11,13 +17,14 @@ ae.add_requested_context(ModalityWorklistInformationFind)
 
 ds = Dataset()
 ds.PatientName = '*'
-ds.AccessionNumber = os.environ.get('ACCESSION')
+ds.StudyDate = ''
+ds.AccessionNumber = '2198270A'
 ds.PatientID = ''
 ds.StudyInstanceUID = ''
 ds.QueryRetrieveLevel = 'STUDY'
 ds.ScheduledProcedureStepSequence = [Dataset()]
 item = ds.ScheduledProcedureStepSequence[0]
-item.modality = 'CR'
+item.modality = ''
 
 # associate with SCP
 scp_ip = os.environ.get('SCP_IP')
@@ -34,8 +41,8 @@ if assoc.is_established:
             print('C-FIND query status: 0x{0:04x}'.format(status.Status))
             if status.Status in (0xFF00, 0xFF01):
                 print(identifier)
-            else:
-                print('Connection timed out, was aborted or receieved invalid response')
+        else:
+            print('Connection timed out, was aborted or receieved invalid response')
 
     assoc.release()
 else:
