@@ -102,7 +102,6 @@ def query_worklist(request):
 
     if request.method == 'POST':
         accession = request.POST['accession']
-        print(accession)
 
         # Query Worklist by accession
         scu_ae = os.environ.get('AE_TITLE')
@@ -145,9 +144,20 @@ def query_worklist(request):
         else:
             study_data = 'Associated rejected, aborted or never connected'
 
+        query_form = TechNoteForm()
+
         context = {
             'study_data': study_data,
-            'error': error
+            'patient_name': study_data[0x10, 0x10].value,
+            'patient_id': study_data[0x10, 0x20].value,
+            'accession': study_data[0x08, 0x50].value,
+            'StudyInstanceUID': study_data[0x20, 0x0d].value,
+            'modality': study_data.ScheduledProcedureStepSequence[0][0x08, 0x60].value,
+            'study_date': study_data.ScheduledProcedureStepSequence[0][0x40, 0x02].value,
+            'study_description': study_data.ScheduledProcedureStepSequence[0][0x40, 0x07].value,
+            'error': error,
+            'query_form': query_form,
+
         }
 
         return render(request, 'tech_forms/query_worklist.html', context)

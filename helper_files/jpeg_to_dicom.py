@@ -27,6 +27,9 @@ def generate_dicom_from_image(image_file, **kwargs):
     ds = FileDataset(filename_little_endian, {},
                      file_meta=file_meta, preamble=b"\0" * 128)
 
+    # kwargs so far = accession, modality, procedure, tech initia, patient
+    # name, patient id
+
     # Main data elements
     ds.ImageType = ['ORIGINAL', 'SECONDARY']
     ds.SOPClassUID = '1.2.840.10008.5.1.4.1.1.7'
@@ -43,7 +46,7 @@ def generate_dicom_from_image(image_file, **kwargs):
     ds.Manufacturer = 'PACSFORM'
     ds.InstitutionName = 'LXA'
     ds.ReferringPhysicianName = ''
-    ds.StationName = 'DUN-DIUS-PC01'
+    ds.StationName = 'PACS-FORM-PC01'
     ds.StudyDescription = kwargs['procedure']
     ds.SeriesDescription = 'PACS FORM'
     ds.InstitutionalDepartmentName = 'US'
