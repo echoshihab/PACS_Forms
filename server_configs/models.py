@@ -13,3 +13,7 @@ class DestinationConfigs(models.Model):
     destination_ae = models.CharField(max_length=20)
     destination_ip = models.CharField(max_length=30)
     destination_port = models.IntegerField(MinValueValidator(0))
+
+
+class WorkstationConfigs(models.Model):
+    workstation_ae = models.CharField(max_length=30)

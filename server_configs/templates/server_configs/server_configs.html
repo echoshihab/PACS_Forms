@@ -5,14 +5,25 @@
 </head>
 <body>
 
+	<table>
+		<tr>
+			<th>Workstation AE</th>
+		</tr>
+		<tr>
+			<td>{{ workstation_ae }}
+		</tr>
+	</table>
+
 <table>
 <tr>
 	<th>Storage Destination AE</th>
 	<th>Storage Destination IP</th>
+	<th>Storage Destination Port</th>
 </tr>
 <tr>
 	<td> {{ destination_ae }} </td>
 	<td> {{ destination_ip }} </td>
+	<td> {{ destination_port }} </td>
 </tr>
 
 </table>
@@ -23,10 +34,12 @@
 <tr>
 	<th>Worklist Destination </th>
 	<th>Workslist Destination IP </th>
+	<th>Workslist Port </th>
 </tr>
 <tr>
 	<td> {{ worklist_ae }} </td>
 	<td> {{ worklist_ip }}  </td>
+	<td> {{ worklist_port }}  </td>
 </tr>
 
 </table>

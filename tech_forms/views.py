@@ -9,7 +9,7 @@ from pydicom.uid import UID
 from pynetdicom import AE
 from pydicom.dataset import Dataset
 from pynetdicom.sop_class import ModalityWorklistInformationFind
-# Create your views here.
+from server_configs.models import DestinationConfigs, WorklistConfigs, WorkstationConfigs
 
 
 def tech_form(request):
@@ -60,9 +60,13 @@ def tech_form_submit(request):
 
 # send to PACS
 
-    scu_ae = os.environ.get('AE_TITLE')
-    dest_ae = os.environ.get('DEST_AE')
-    dest_ip = os.environ.get('DEST_IP')
+    scu_ae = WorkstationConfigs.objects.get(id=1).workstation_ae
+
+    destination_configs = DestinationConfigs.objects.get(id=1)
+
+    dest_ae = destination_configs.destination_ae
+    dest_ip = destination_configs.destination_ip
+    dest_port = destination_configs.destination_port
 
     ae = AE(ae_title=scu_ae)
     # this uid is for secondary image capture
@@ -71,7 +75,7 @@ def tech_form_submit(request):
 
     ds = dcmread('tech_note.dcm')
 
-    assoc = ae.associate(dest_ip, 5000, ae_title=dest_ae)
+    assoc = ae.associate(dest_ip, dest_port, ae_title=dest_ae)
 
     if assoc.is_established:
         print('Associated')

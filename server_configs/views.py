@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import DestinationConfigs, WorklistConfigs
+from .models import DestinationConfigs, WorklistConfigs, WorkstationConfigs
 
 # Create your views here.
 
@@ -8,6 +8,7 @@ def server_config(request):
 
     worklist_configs = WorklistConfigs.objects.get(id=1)
     destination_configs = DestinationConfigs.objects.get(id=1)
+    workstation_configs = WorkstationConfigs.objects.get(id=1)
 
     context = {
         'worklist_ae': worklist_configs.worklist_ae,
@@ -15,6 +16,7 @@ def server_config(request):
         'worklist_port': worklist_configs.worklist_port,
         'destination_ae': destination_configs.destination_ae,
         'destination_ip': destination_configs.destination_ip,
-        'destination_port': destination_configs.destination_port
+        'destination_port': destination_configs.destination_port,
+        'workstation_ae': workstation_configs.workstation_ae
     }
     return render(request, 'server_configs/server_configs.html', context)
