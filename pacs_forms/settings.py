@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tech_forms.apps.TechFormsConfig',
+    'server_configs.apps.ServerConfigsConfig',
 ]
 
 MIDDLEWARE = [
