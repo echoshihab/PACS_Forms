@@ -2,6 +2,10 @@
 <html>
 <head>
 	<title>Server Configs</title>
+	<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -47,12 +51,28 @@
 </tr>
 
 </table>
+<button id="edit">Edit</button></div>
 
-<form id="server_config">
-	{{ server_config_form }}
-<button type="submit" name="submit">Save</button>
-</form>
+<div id="server_config">
+	<form id="config_form" method='post' action="{% url 'server_config' %}">
+		{% csrf_token %}
+		{{ server_config_form }}
+	<button type="submit" name="submit">Save</button>
+	</form>
+</div>
 
 
+<script>
+	$("#server_config").hide();
+
+
+
+	$('#edit').on('click', function() {
+		$("#edit").hide();
+		$("#server_config").show();
+	});
+
+	
+</script>
 </body>
 </html>
