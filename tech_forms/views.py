@@ -12,6 +12,10 @@ from pynetdicom.sop_class import ModalityWorklistInformationFind
 from server_configs.models import DestinationConfigs, WorklistConfigs, WorkstationConfigs
 
 
+def home_page(request):
+    return render(request, 'tech_forms/home.html')
+
+
 def tech_form(request):
     form = TechNoteForm()
     context = {
