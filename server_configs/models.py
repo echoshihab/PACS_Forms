@@ -1,6 +1,5 @@
 from django.db import models
 from django.core.validators import MinValueValidator
-# Create your models here.
 
 
 class WorklistConfigs(models.Model):
@@ -17,3 +16,10 @@ class DestinationConfigs(models.Model):
 
 class WorkstationConfigs(models.Model):
     workstation_ae = models.CharField(max_length=30)
+
+
+class UIDvalues(models.Model):
+    study_instance_uid = models.CharField(max_length=60)
+    series_instance_uid = models.CharField(max_length=60)
+    implementation_class_uid = models.CharField(max_length=60)
+    uid_counter = models.BigIntegerField(null=True)

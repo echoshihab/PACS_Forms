@@ -1,15 +1,16 @@
+import textwrap
+import os
+import datetime
 from django.shortcuts import render, redirect
 from .forms import TechNoteForm, QueryWorklistForm
 from PIL import Image, ImageFont, ImageDraw
 from helper_files.jpeg_to_dicom import generate_dicom_from_image
-import textwrap
-import os
 from pydicom import dcmread
 from pydicom.uid import UID
 from pynetdicom import AE
 from pydicom.dataset import Dataset
 from pynetdicom.sop_class import ModalityWorklistInformationFind
-from server_configs.models import DestinationConfigs, WorklistConfigs, WorkstationConfigs
+from server_configs.models import DestinationConfigs, WorklistConfigs, WorkstationConfigs, UIDvalues
 
 
 def home_page(request):
@@ -56,11 +57,33 @@ def tech_form_submit(request):
 
     img.save('tech_note.jpg', "JPEG")
 
-# convert jpeg to DICOM
+    # get uid root values from database
+    uid_values = UIDvalues.objects.get(id=1)
+    # make the uids
+    study_instance_uid = uid_values.study_instance_uid + \
+        '.' + str(uid_values.uid_counter + 1)
+    series_instance_uid = uid_values.series_instance_uid + \
+        '.' + str(uid_values.uid_counter + 1)
+    sop_instance_uid = uid_values.series_instance_uid + \
+        '.1.' + str(uid_values.uid_counter + 1)
+    implementation_class_uid = uid_values.implementation_class_uid
+
+    # get time values
+    date_of_capture = datetime.datetime.now().strftime('%Y%m%d')
+    time_of_capture = datetime.datetime.now().strftime('%H%M%S')
+
+    # convert jpeg to DICOM
     output = generate_dicom_from_image('tech_note.jpg', modality=request.POST['modality'], patient_id=request.POST['patient_id'],
-                                       patient_name=request.POST['patient_name'], procedure=request.POST['procedure'], tech_initials=request.POST['tech_initials'], accession=request.POST['accession'])
+                                       patient_name=request.POST['patient_name'], procedure=request.POST[
+                                           'procedure'], tech_initials=request.POST['tech_initials'], accession=request.POST['accession'],
+                                       study_instance_uid=study_instance_uid, series_instance_uid=series_instance_uid, sop_instance_uid=sop_instance_uid, implementation_class_uid=implementation_class_uid,
+                                       date_of_capture=date_of_capture, time_of_capture=time_of_capture)
+
+    uid_values.uid_counter = uid_values.uid_counter + 1
+    uid_values.save()
 
     output.save_as("tech_note.dcm")
+
 
 # send to PACS
 
@@ -73,7 +96,7 @@ def tech_form_submit(request):
     dest_port = destination_configs.destination_port
 
     ae = AE(ae_title=scu_ae)
-    # this uid is for secondary image capture
+    # uid for secondary image capture
     uid = UID('1.2.840.10008.5.1.4.1.1.7')
     ae.add_requested_context(uid)
 

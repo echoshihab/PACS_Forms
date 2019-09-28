@@ -3,7 +3,6 @@ import tempfile
 import datetime
 from PIL import Image
 from pydicom.dataset import Dataset, FileDataset
-from pydicom.uid import UID
 
 
 def generate_dicom_from_image(image_file, **kwargs):
@@ -18,9 +17,10 @@ def generate_dicom_from_image(image_file, **kwargs):
     file_meta = Dataset()
     file_meta.FileMetaInformationGroupLength = 190
     file_meta.FileMetaInformationVersion = b'\x00\x01'
+    # secondary capture image storage
     file_meta.MediaStorageSOPClassUID = '1.2.840.10008.5.1.4.1.1.7'
-    file_meta.MediaStorageSOPInstanceUID = '1.3.6.1.4.1.23849.1394177094.11.1637038637959083360.2.2.1'
-    file_meta.TransferSyntaxUID = '1.2.840.10008.1.2.1'
+    file_meta.MediaStorageSOPInstanceUID = kwargs['sop_instance_uid']
+    file_meta.TransferSyntaxUID = '1.2.840.10008.1.2.1'  # explicit VR Little-endian
     file_meta.ImplementationClassUID = '1.2.840.000000.1.1'  # old - '1.2.840.114202.5.2'
     file_meta.ImplementationVersionName = 'PF.1.0.0'
 
@@ -33,13 +33,13 @@ def generate_dicom_from_image(image_file, **kwargs):
     # Main data elements
     ds.ImageType = ['ORIGINAL', 'SECONDARY']
     ds.SOPClassUID = '1.2.840.10008.5.1.4.1.1.7'
-    ds.SOPInstanceUID = '1.3.6.1.4.1.23849.1394177094.11.1637038637959083360.2.2.1'
-    ds.StudyDate = '20190912'
-    ds.SeriesDate = '20190912'
-    ds.AcquisitionDate = '20190912'
-    ds.StudyTime = '054219'
-    ds.SeriesTime = '054219'
-    ds.AcquisitionTime = '054316'
+    ds.SOPInstanceUID = kwargs['sop_instance_uid']
+    ds.StudyDate = kwargs['date_of_capture']
+    ds.SeriesDate = kwargs['date_of_capture']
+    ds.AcquisitionDate = kwargs['date_of_capture']
+    ds.StudyTime = kwargs['time_of_capture']
+    ds.SeriesTime = kwargs['time_of_capture']
+    ds.AcquisitionTime = kwargs['time_of_capture']
     ds.AccessionNumber = kwargs['accession']
     ds.Modality = kwargs['modality']
     ds.ConversionType = 'WSD'
@@ -58,15 +58,15 @@ def generate_dicom_from_image(image_file, **kwargs):
     ds.PatientSex = ''
     ds.BodyPartExamined = ''
     ds.DeviceSerialNumber = ''
-    ds.DateOfSecondaryCapture = '20190912'
-    ds.TimeOfSecondaryCapture = '054316'
+    ds.DateOfSecondaryCapture = kwargs['date_of_capture']
+    ds.TimeOfSecondaryCapture = kwargs['time_of_capture']
     ds.SecondaryCaptureDeviceManufacturer = 'Shihab'
     ds.SecondaryCaptureDeviceManufacturerModelName = 'PACSFORM'
     ds.SecondaryCaptureDeviceSoftwareVersions = '1.0.0'
     ds.SoftwareVersions = 'V1.0.0'
     ds.DigitalImageFormatAcquired = ''
-    ds.StudyInstanceUID = '1.3.6.1.4.1.23849.869756260.11.1637038637957989484'
-    ds.SeriesInstanceUID = '1.3.6.1.4.1.23849.1394177094.11.1637038637959083360.2.2'
+    ds.StudyInstanceUID = kwargs['study_instance_uid']
+    ds.SeriesInstanceUID = kwargs['series_instance_uid']
     ds.StudyID = ''
     ds.SeriesNumber = "999"
     ds.InstanceNumber = "1"
