@@ -1,15 +1,27 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Tech Form</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'tech_forms/style.css' %}">
 </head>
 <body>
-	<form action="{% url 'tech_form_submit' %}" method="post" novalidate>
-		{% csrf_token %}
-		{{ form }}
-		<button type="submit">Submit Form </button>
-	</form>
-
+<div class="header">
+Technologist Form (Manual Input)
+</div>
+<div class="wrapper">	
+	<div class="tech-form">
+			<form action="{% url 'tech_form_submit' %}" method="post" novalidate>
+				<div class="input-fields">
+				{% csrf_token %}
+				{{ form }}
+				</div>
+				<button class="btn" type="submit">Send to PACS </button>
+			</form>
+	</div>
+</div>
+<div class="footer">
 <a href="{% url 'home' %}">Return to homepage </a>
+</div>
 </body>
 </html>

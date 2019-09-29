@@ -267,15 +267,6 @@ def worklist_form_submit(request):
 
     # send to PACS
 
-        # enable logging
-
-        import logging
-
-        logging.basicConfig(filename='pynetdicom.log', filemode='w',
-                            format='%(name)s - %(levelname)s - %(message)s')
-        LOGGER = logging.getLogger('pynetdicom')
-        LOGGER.setLevel(logging.DEBUG)
-
         scu_ae = WorkstationConfigs.objects.get(id=1).workstation_ae
 
         destination_configs = DestinationConfigs.objects.get(id=1)

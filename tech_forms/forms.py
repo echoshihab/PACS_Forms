@@ -20,6 +20,11 @@ class TechNoteForm(forms.Form):
     comments = forms.CharField(
         label='Comments', max_length=500, widget=forms.Textarea)
 
+    def __init__(self, *args, **kwargs):
+        super(TechNoteForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'input'
+
 
 class QueryWorklistForm(forms.Form):
     accession = forms.CharField(label='Accession#', max_length=20)
