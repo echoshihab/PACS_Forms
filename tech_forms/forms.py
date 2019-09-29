@@ -28,3 +28,8 @@ class TechNoteForm(forms.Form):
 
 class QueryWorklistForm(forms.Form):
     accession = forms.CharField(label='Accession#', max_length=20)
+
+    def __init__(self, *args, **kwargs):
+        super(QueryWorklistForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'input'
