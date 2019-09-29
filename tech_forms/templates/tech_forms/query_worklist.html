@@ -26,16 +26,17 @@
 </ul>
 {{ error }}
 
-<form method="POST" action="{% url 'tech_form_submit' %}">
+<form method="POST" action="{% url 'worklist_form_submit' %}">
 	{% csrf_token %}
 Tech Initials: {{ query_form.tech_initials }}
 Comments: {{ query_form.comments }}
 <input type="hidden" name="modality" value="{{ modality }}">
 <input type="hidden" name="patient_id" value="{{ patient_id }}">
-<input type="hidden" name="patient_name" value="Test 3d">
+<input type="hidden" name="patient_name" value="{{ patient_name }}">
 <input type="hidden" name="accession" value="{{ accession }}">
-<input type="hidden" name="exam_date" value="{{ study_date }}">
-<input type="hidden" name="procedure" value="{{ study_description }}">
+<input type="hidden" name="study_date" value="{{ study_date }}">
+<input type="hidden" name="study_description" value="{{ study_description }}">
+<input type="hidden" name="study_instance_uid" value="{{ StudyInstanceUID }}">
 	<button type="submit" name="submit">Send to PACS</button>
 
 <a href="{% url 'home' %}">Return to homepage </a>
