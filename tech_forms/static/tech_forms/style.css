@@ -97,10 +97,20 @@ body
 	top:0;
 }
 
+.header-aside{
+	float: right;
+	margin-right:5px;
+}
+
 .footer{
 	bottom:0;
 }
 
 a{
 	color: #fff;
+}
+
+
+td {
+	text-align: center;
 }

@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,64 +7,81 @@
   src="https://code.jquery.com/jquery-3.4.1.min.js"
   integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
   crossorigin="anonymous"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'tech_forms/style.css' %}">
 </head>
 <body>
+<div class="header">
+		Server Configurations
+		<div class ="header-aside">
+				<a href="{% url 'logout' %}">Log Out </a>
+		</div>
+</div>
+<div class="wrapper">
+	<div class="tech-form">
+		<div class="input-fields">
+		<table class="input">
+			<tr>
+				<th> Workstation AE </th>
 
-	<table>
+			</tr>
+			<tr>
+				<td>{{ workstation_ae }} </td>
+
+			</tr>
+		</table>
+
+
+
+
+		<table class="input" >
 		<tr>
-			<th> Workstation AE </th>
-
+			<th>Storage Destination AE</th>
+			<th>Storage Destination IP</th>
+			<th>Storage Destination Port</th>
 		</tr>
 		<tr>
-			<td>{{ workstation_ae }} </td>
-
+			<td> {{ destination_ae }} </td>
+			<td> {{ destination_ip }} </td>
+			<td> {{ destination_port }} </td>
 		</tr>
-	</table>
+
+		</table>
 
 
+		<table class="input">
+		<tr>
+			<th>Worklist Destination </th>
+			<th>Workslist Destination IP </th>
+			<th>Workslist Port </th>
+		</tr>
+		<tr>
+			<td> {{ worklist_ae }} </td>
+			<td> {{ worklist_ip }}  </td>
+			<td> {{ worklist_port }}  </td>
+		</tr>
+
+		</table>
+		</div>
+		<button class="btn" id="edit">Edit</button>
+
+	</div>
+</div>
 
 
-<table>
-<tr>
-	<th>Storage Destination AE</th>
-	<th>Storage Destination IP</th>
-	<th>Storage Destination Port</th>
-</tr>
-<tr>
-	<td> {{ destination_ae }} </td>
-	<td> {{ destination_ip }} </td>
-	<td> {{ destination_port }} </td>
-</tr>
-
-</table>
-
-
-<table>
-<tr>
-	<th>Worklist Destination </th>
-	<th>Workslist Destination IP </th>
-	<th>Workslist Port </th>
-</tr>
-<tr>
-	<td> {{ worklist_ae }} </td>
-	<td> {{ worklist_ip }}  </td>
-	<td> {{ worklist_port }}  </td>
-</tr>
-
-</table>
-<button id="edit">Edit</button></div>
 
 <div id="server_config">
 	<form id="config_form" method='post' action="{% url 'server_config' %}">
 		{% csrf_token %}
 		{{ server_config_form }}
-	<button type="submit" name="submit">Save</button>
+	<button class="btn" type="submit" name="submit">Save</button>
 	</form>
 </div>
 
-<a href="{% url 'logout' %}">Log Out </a>
-<a href="{% url 'home' %}">Return to homepage </a>
 
+
+<div class="footer"> 
+	<a href="{% url 'home' %}">Return to homepage </a>
+</div>
 <script>
 	$("#server_config").hide();
 
