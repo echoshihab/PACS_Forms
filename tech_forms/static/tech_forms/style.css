@@ -54,7 +54,7 @@ body
 }
 
 
-.input
+.input, #id_username, #id_password
 {
 	margin: 10px 0;
 	border: 0;

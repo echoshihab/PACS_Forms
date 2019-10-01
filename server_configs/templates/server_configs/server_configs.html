@@ -17,7 +17,7 @@
 		</div>
 </div>
 <div class="wrapper">
-	<div class="tech-form">
+	<div class="tech-form test">
 		<div class="input-fields">
 		<table class="input">
 			<tr>
@@ -64,20 +64,24 @@
 		</div>
 		<button class="btn" id="edit">Edit</button>
 
+
 	</div>
-</div>
 
 
 
-<div id="server_config">
+
+<div class="tech-form" id="server_config">
 	<form id="config_form" method='post' action="{% url 'server_config' %}">
+		<div class="input-fields">
 		{% csrf_token %}
 		{{ server_config_form }}
+		</div>
 	<button class="btn" type="submit" name="submit">Save</button>
+	<button class="btn" id="cancel">Cancel</button>
 	</form>
 </div>
 
-
+</div>
 
 <div class="footer"> 
 	<a href="{% url 'home' %}">Return to homepage </a>
@@ -89,6 +93,7 @@
 
 	$('#edit').on('click', function() {
 		$("#edit").hide();
+		$(".test").hide();
 		$("#server_config").show();
 	});
 

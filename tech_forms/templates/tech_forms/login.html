@@ -1,19 +1,38 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Admin Login PAge</title>
+		<link rel="stylesheet" type="text/css" href="{% static 'tech_forms/style.css' %}">
 </head>
 <body>
+
+<div class="header">
+ 	Admin Login Form
+</div>
+
+<div class="wrapper">
+<div class="tech-form">
 {% if form.errors %}
 <p>Your username and password didn't match. Please try again.</p>
 {% endif %}
 
 {{ login_error }}
 <form method="post" action="{% url 'login' %}">
+<div class="input-fields">
 {% csrf_token %}
 {{ form }}
+</div>
 
-<button type="submit" name="submit">Login </button>
+<button class="btn" type="submit" name="submit">Login </button>
 </form>
+
+</div>
+</div>
+
+<div class="footer">
+<a href="{% url 'home' %}">Return to homepage </a>
+</div>
+
 </body>
 </html>

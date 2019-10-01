@@ -1,13 +1,18 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Main PAge</title>
+	<title>Main Page</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'tech_forms/home_style.css' %}">
 </head>
 <body>
-	<ul>
-	<li><a href="{% url 'tech_form' %}"> Manual Input Form</a></li>
-	<li><a href="{% url 'query_worklist' %}"> Query Worklist Form </a></li>
-	<li><a href="{% url 'server_config' %}"> Server Configs </a></li>
-	</ul>
+
+<div class ="wrapper">
+	<div class="main">
+		<a class="square" href="{% url 'tech_form' %}"> Manual Input Form </a>
+		<a class="square" href="{% url 'query_worklist' %}"> Query Worklist Form </a>
+		<a class="square" href="{% url 'server_config' %}"> Server Configs </a>
+	</div>
+</div>
 </body>
 </html>

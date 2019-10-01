@@ -13,3 +13,8 @@ class ServerConfigForm(forms.Form):
         label='Storage Destination IP')
     destination_port = forms.IntegerField(
         label="Storage Destination Port")
+
+    def __init__(self, *args, **kwargs):
+        super(ServerConfigForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'input'

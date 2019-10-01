@@ -36,20 +36,21 @@
 
 	</ul>
 	{{ error }}
-
-	<form method="POST" action="{% url 'worklist_form_submit' %}" id="send_form">
-		{% csrf_token %}
-	Tech Initials: {{ query_form.tech_initials }}
-	Comments: {{ query_form.comments }}
-	<input type="hidden" class="input" name="modality" value="{{ modality }}">
-	<input type="hidden" class="input" name="patient_id" value="{{ patient_id }}">
-	<input type="hidden" class="input" name="patient_name" value="{{ patient_name }}">
-	<input type="hidden" class="input" name="accession" value="{{ accession }}">
-	<input type="hidden" class="input" name="study_date" value="{{ study_date }}">
-	<input type="hidden" class="input" name="study_description" value="{{ study_description }}">
-	<input type="hidden" class="input" name="study_instance_uid" value="{{ StudyInstanceUID }}">
-	<button class="btn" type="submit" name="submit">Send to PACS</button>
+	<div class="tech-form">
+		<form method="POST" action="{% url 'worklist_form_submit' %}" id="send_form">
+			{% csrf_token %}
+		Tech Initials: {{ query_form.tech_initials }}
+		Comments: {{ query_form.comments }}
+		<input type="hidden" class="input" name="modality" value="{{ modality }}">
+		<input type="hidden" class="input" name="patient_id" value="{{ patient_id }}">
+		<input type="hidden" class="input" name="patient_name" value="{{ patient_name }}">
+		<input type="hidden" class="input" name="accession" value="{{ accession }}">
+		<input type="hidden" class="input" name="study_date" value="{{ study_date }}">
+		<input type="hidden" class="input" name="study_description" value="{{ study_description }}">
+		<input type="hidden" class="input" name="study_instance_uid" value="{{ StudyInstanceUID }}">
+		<button class="btn" type="submit" name="submit">Send to PACS</button>
 	</form>
+	</div>
 
 </div>
 
