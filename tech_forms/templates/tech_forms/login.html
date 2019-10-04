@@ -13,9 +13,6 @@
 
 <div class="wrapper">
 <div class="tech-form">
-{% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
-{% endif %}
 
 {{ login_error }}
 <form method="post" action="{% url 'login' %}">

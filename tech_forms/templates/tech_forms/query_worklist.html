@@ -12,66 +12,62 @@
 <body>
 	<div class="header">Technologist Form (Query Worklist)</div>
 
-<div class="wrapper">
-	<div class="tech-form">
-	<form method="POST" action="{% url 'query_worklist' %}" class="query_form">
-		<div class="input-fields">
-			{% csrf_token %}
-			{{ form }}
-		</div>
-		
-		<button type="submit" name="submit" id="query_worklist" class="btn">Query Worklist</button>
-	</form>
-	</div>
-
-	<ul id="study_data">
-		<li> Patient Name:  {{ patient_name  }} </li>
-		<li> Patient ID: {{ patient_id }} </li>
-		<li> Accession: {{ accession }} </li>
-		<li> Study Instance UID : {{ StudyInstanceUID }} </li>
-		<li> Modality: {{ modality }} </li>
-		<li> Study Date: {{ study_date }}</li>
-		<li> Study Description: {{ study_description }} </li>
 
 
-	</ul>
+{% if study_data %}
 	{{ error }}
-	<div class="tech-form">
-		<form method="POST" action="{% url 'worklist_form_submit' %}" id="send_form">
-			{% csrf_token %}
-		Tech Initials: {{ query_form.tech_initials }}
-		Comments: {{ query_form.comments }}
-		<input type="hidden" class="input" name="modality" value="{{ modality }}">
-		<input type="hidden" class="input" name="patient_id" value="{{ patient_id }}">
-		<input type="hidden" class="input" name="patient_name" value="{{ patient_name }}">
-		<input type="hidden" class="input" name="accession" value="{{ accession }}">
-		<input type="hidden" class="input" name="study_date" value="{{ study_date }}">
-		<input type="hidden" class="input" name="study_description" value="{{ study_description }}">
-		<input type="hidden" class="input" name="study_instance_uid" value="{{ StudyInstanceUID }}">
-		<button class="btn" type="submit" name="submit">Send to PACS</button>
-	</form>
-	</div>
 
-</div>
+				<ul class="study_data">
+					<li> Patient Name:  {{ patient_name  }} </li>
+					<li> Patient ID: {{ patient_id }} </li>
+					<li> Accession: {{ accession }} </li>
+					<li> Modality: {{ modality }} </li>
+					<li> Study Date: {{ study_date }}</li>
+					<li> Study Description: {{ study_description }} </li>
+
+				</ul>
+
+			<div class="wrapper">
+			<div class="tech-form" >
+
+				<form method="POST" action="{% url 'worklist_form_submit' %}" id="send_form">
+					{% csrf_token %}
+				Tech Initials: {{ query_form.tech_initials }}
+				Comments: {{ query_form.comments }}
+				<input type="hidden" class="input" name="modality" value="{{ modality }}">
+				<input type="hidden" class="input" name="patient_id" value="{{ patient_id }}">
+				<input type="hidden" class="input" name="patient_name" value="{{ patient_name }}">
+				<input type="hidden" class="input" name="accession" value="{{ accession }}">
+				<input type="hidden" class="input" name="study_date" value="{{ study_date }}">
+				<input type="hidden" class="input" name="study_description" value="{{ study_description }}">
+				<input type="hidden" class="input" name="study_instance_uid" value="{{ StudyInstanceUID }}">
+				<button class="btn" type="submit" name="submit">Send to PACS</button>
+			</form>
+			</div>
+
+		</div>
+
+{% else %}
+
+		<div class="wrapper" >
+			<div class="tech-form">
+			<form method="POST" action="{% url 'query_worklist' %}" class="query_form">
+				<div class="input-fields">
+					{% csrf_token %}
+					{{ form }}
+				</div>
+				
+				<button type="submit" name="submit" id="query_worklist" class="btn">Query Worklist</button>
+			</form>
+			</div>
+		</div>
+
+{% endif %}
 
 <div class="footer">
 <a href="{% url 'home' %}">Return to homepage </a>
 </div>
 
 
-<script>
-	$("#send_form").hide();
-	$("#study_data").hide();
-
-
-
-	$('#query_worklist').on('click', function() {
-		$("#query_form").hide();
-		$("##send_form").show();
-		$("#study_data").show();
-	});
-
-	
-</script>
 </body>
 </html>

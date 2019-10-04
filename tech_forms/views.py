@@ -172,7 +172,6 @@ def query_worklist(request):
                         error = "No Errors"
                 else:
                     error = "Connection timed out, was aborted or receieved invalid response"
-
             assoc.release()
         else:
             study_data = 'Associated rejected, aborted or never connected'

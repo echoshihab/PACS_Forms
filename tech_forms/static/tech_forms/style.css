@@ -114,3 +114,10 @@ a{
 td {
 	text-align: center;
 }
+
+.study_data{
+	margin-top:10%;
+	list-style: none;
+	text-align: center;
+	background: rgba(235, 239, 239, 1);
+}
