@@ -78,7 +78,7 @@ def tech_form_submit(request):
                                            'procedure'], tech_initials=request.POST['tech_initials'], accession=request.POST['accession'],
                                        study_instance_uid=study_instance_uid, series_instance_uid=series_instance_uid, sop_instance_uid=sop_instance_uid, implementation_class_uid=implementation_class_uid,
                                        date_of_capture=date_of_capture, time_of_capture=time_of_capture)
-
+    # update UID values in database
     uid_values.uid_counter = uid_values.uid_counter + 1
     uid_values.save()
 
@@ -167,32 +167,41 @@ def query_worklist(request):
                 if status:
                     print(
                         'C-FIND query status: 0x{0:04x}'.format(status.Status))
-                    if status.Status in (0xFF00, 0xFF01):
+
+                    if status.Status in (0xFF00, 0xFF01) and identifier:
                         study_data = identifier
-                        error = "No Errors"
+
+                        query_form = TechNoteForm()
+
+                        context = {
+                            'study_data': study_data,
+                            'patient_name': study_data[0x10, 0x10].value,
+                            'patient_id': study_data[0x10, 0x20].value,
+                            'accession': study_data[0x08, 0x50].value,
+                            'StudyInstanceUID': study_data[0x20, 0x0d].value,
+                            'modality': study_data.ScheduledProcedureStepSequence[0][0x08, 0x60].value,
+                            'study_date': study_data.ScheduledProcedureStepSequence[0][0x40, 0x02].value,
+                            'study_description': study_data.ScheduledProcedureStepSequence[0][0x40, 0x07].value,
+                            'query_form': query_form,
+
+                        }
+
+                        return render(request, 'tech_forms/query_worklist.html', context)
+
+                    else:
+                        error = 'No match found'
+
                 else:
                     error = "Connection timed out, was aborted or receieved invalid response"
             assoc.release()
         else:
-            study_data = 'Associated rejected, aborted or never connected'
-
-        query_form = TechNoteForm()
+            error = 'Associated rejected, aborted or never connected'
 
         context = {
-            'study_data': study_data,
-            'patient_name': study_data[0x10, 0x10].value,
-            'patient_id': study_data[0x10, 0x20].value,
-            'accession': study_data[0x08, 0x50].value,
-            'StudyInstanceUID': study_data[0x20, 0x0d].value,
-            'modality': study_data.ScheduledProcedureStepSequence[0][0x08, 0x60].value,
-            'study_date': study_data.ScheduledProcedureStepSequence[0][0x40, 0x02].value,
-            'study_description': study_data.ScheduledProcedureStepSequence[0][0x40, 0x07].value,
             'error': error,
-            'query_form': query_form,
-
         }
 
-        return render(request, 'tech_forms/query_worklist.html', context)
+        return render(request, 'tech_forms/query_worklist_error.html', context)
 
     else:
 

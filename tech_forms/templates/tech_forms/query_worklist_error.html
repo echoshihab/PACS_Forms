@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Query Worklist</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'tech_forms/style.css' %}">
+
+</head>
+<body>
+
+<div class="wrapper">
+	<div class="tech-form">
+	<em> Please review the details below and contact your PACS Administrator if you need assistance. </em>
+	</div>
+	<div class="tech-form">
+		<strong>Error Details</strong>: {{error}}
+	</div>
+</div>
+
+<div class="footer">
+<a href="{% url 'home' %}">Return to homepage </a>
+</div>
+
+
+</body>
+</html>
