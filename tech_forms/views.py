@@ -29,104 +29,106 @@ def tech_form_submit(request):
     form = TechNoteForm(request.POST)
     errors = form.errors
 
-# form data
-    modality = f"Modality: {request.POST['modality']}"
-    patient_id = f"Patient ID: {request.POST['patient_id']}"
-    patient_name = f"Patient Name: {request.POST['patient_name']}"
-    exam_date = f"Exam Date: {request.POST['exam_date']}"
-    accession = f"Accession#: {request.POST['accession']}"
-    procedure = f"Procedure: {request.POST['procedure']}"
-    comments = f"Comments: {request.POST['comments']}"
-    tech_initials = f"Tech Initials: {request.POST['tech_initials']}"
-
-    form_data = [modality, patient_id, patient_name, exam_date,
-                 accession, procedure, comments, tech_initials]
-
-# write form data to JPEG
-    img = Image.new('RGB', (812, 1052), 'white')
-    font = ImageFont.truetype("arial.ttf", 20)
-    starting_height = 10
-
-    for item in form_data:
-        lines = textwrap.wrap(item, width=80)
-        for line in lines:
-            line_width, line_height = font.getsize(line)
-            draw = ImageDraw.Draw(img)
-            draw.text((10, starting_height), line, font=font, fill="black")
-            starting_height += (line_height + 5)
-
-    img.save('tech_note.jpg', "JPEG")
-
-    # get uid root values from database
-    uid_values = UIDvalues.objects.get(id=1)
-    # make the uids
-    study_instance_uid = uid_values.study_instance_uid + \
-        '.' + str(uid_values.uid_counter + 1)
-    series_instance_uid = uid_values.series_instance_uid + \
-        '.' + str(uid_values.uid_counter + 1)
-    sop_instance_uid = uid_values.series_instance_uid + \
-        '.1.' + str(uid_values.uid_counter + 1)
-    implementation_class_uid = uid_values.implementation_class_uid
-
-    # get time values
-    date_of_capture = datetime.datetime.now().strftime('%Y%m%d')
-    time_of_capture = datetime.datetime.now().strftime('%H%M%S')
-
-    # convert jpeg to DICOM
-    output = generate_dicom_from_image('tech_note.jpg', modality=request.POST['modality'], patient_id=request.POST['patient_id'],
-                                       patient_name=request.POST['patient_name'], procedure=request.POST[
-                                           'procedure'], tech_initials=request.POST['tech_initials'], accession=request.POST['accession'],
-                                       study_instance_uid=study_instance_uid, series_instance_uid=series_instance_uid, sop_instance_uid=sop_instance_uid, implementation_class_uid=implementation_class_uid,
-                                       date_of_capture=date_of_capture, time_of_capture=time_of_capture)
-    # update UID values in database
-    uid_values.uid_counter = uid_values.uid_counter + 1
-    uid_values.save()
-
-    output.save_as("tech_note.dcm")
-
-
-# send to PACS
-
-    scu_ae = WorkstationConfigs.objects.get(id=1).workstation_ae
-
-    destination_configs = DestinationConfigs.objects.get(id=1)
-
-    dest_ae = destination_configs.destination_ae
-    dest_ip = destination_configs.destination_ip
-    dest_port = destination_configs.destination_port
-
-    ae = AE(ae_title=scu_ae)
-    # uid for secondary image capture
-    uid = UID('1.2.840.10008.5.1.4.1.1.7')
-    ae.add_requested_context(uid)
-
-    ds = dcmread('tech_note.dcm')
-
-    assoc = ae.associate(dest_ip, dest_port, ae_title=dest_ae)
-
-    if assoc.is_established:
-        print('Associated')
-        status = assoc.send_c_store(ds)
-
-        if status:
-            dicom_message = 'C-STORE request status: 0x{0:04x}'.format(
-                status.Status)
-        else:
-            dicom_message = 'Connection timed out, was aborted or received invalid resposne'
-
-        assoc.release()
-    else:
-        dicom_message = 'Association rejected, aborted or never connected'
-
-    context = {
-        "errors": errors,
-        "dicom_message": dicom_message
-    }
-
     if form.is_valid():
+        # form data
+        modality = f"Modality: {request.POST['modality']}"
+        patient_id = f"Patient ID: {request.POST['patient_id']}"
+        patient_name = f"Patient Name: {request.POST['patient_name']}"
+        exam_date = f"Exam Date: {request.POST['exam_date']}"
+        accession = f"Accession#: {request.POST['accession']}"
+        procedure = f"Procedure: {request.POST['procedure']}"
+        comments = f"Comments: {request.POST['comments']}"
+        tech_initials = f"Tech Initials: {request.POST['tech_initials']}"
+
+        form_data = [modality, patient_id, patient_name, exam_date,
+                     accession, procedure, comments, tech_initials]
+
+    # write form data to JPEG
+        img = Image.new('RGB', (812, 1052), 'white')
+        font = ImageFont.truetype("arial.ttf", 20)
+        starting_height = 10
+
+        for item in form_data:
+            lines = textwrap.wrap(item, width=80)
+            for line in lines:
+                line_width, line_height = font.getsize(line)
+                draw = ImageDraw.Draw(img)
+                draw.text((10, starting_height), line, font=font, fill="black")
+                starting_height += (line_height + 5)
+
+        img.save('tech_note.jpg', "JPEG")
+
+        # get uid root values from database
+        uid_values = UIDvalues.objects.get(id=1)
+        # make the uids
+        study_instance_uid = uid_values.study_instance_uid + \
+            '.' + str(uid_values.uid_counter + 1)
+        series_instance_uid = uid_values.series_instance_uid + \
+            '.' + str(uid_values.uid_counter + 1)
+        sop_instance_uid = uid_values.series_instance_uid + \
+            '.1.' + str(uid_values.uid_counter + 1)
+        implementation_class_uid = uid_values.implementation_class_uid
+
+        # get time values
+        date_of_capture = datetime.datetime.now().strftime('%Y%m%d')
+        time_of_capture = datetime.datetime.now().strftime('%H%M%S')
+
+        # convert jpeg to DICOM
+        output = generate_dicom_from_image('tech_note.jpg', modality=request.POST['modality'], patient_id=request.POST['patient_id'],
+                                           patient_name=request.POST['patient_name'], procedure=request.POST[
+                                               'procedure'], tech_initials=request.POST['tech_initials'], accession=request.POST['accession'],
+                                           study_instance_uid=study_instance_uid, series_instance_uid=series_instance_uid, sop_instance_uid=sop_instance_uid, implementation_class_uid=implementation_class_uid,
+                                           date_of_capture=date_of_capture, time_of_capture=time_of_capture)
+        # update UID values in database
+        uid_values.uid_counter = uid_values.uid_counter + 1
+        uid_values.save()
+
+        output.save_as("tech_note.dcm")
+
+    # send to PACS
+
+        scu_ae = WorkstationConfigs.objects.get(id=1).workstation_ae
+
+        destination_configs = DestinationConfigs.objects.get(id=1)
+
+        dest_ae = destination_configs.destination_ae
+        dest_ip = destination_configs.destination_ip
+        dest_port = destination_configs.destination_port
+
+        ae = AE(ae_title=scu_ae)
+        # uid for secondary image capture
+        uid = UID('1.2.840.10008.5.1.4.1.1.7')
+        ae.add_requested_context(uid)
+
+        ds = dcmread('tech_note.dcm')
+
+        assoc = ae.associate(dest_ip, dest_port, ae_title=dest_ae)
+
+        if assoc.is_established:
+            print('Associated')
+            status = assoc.send_c_store(ds)
+
+            if status:
+                dicom_message = 'C-STORE request status: 0x{0:04x}'.format(
+                    status.Status)
+            else:
+                dicom_message = 'Connection timed out, was aborted or received invalid resposne'
+
+            assoc.release()
+        else:
+            dicom_message = 'Association rejected, aborted or never connected'
+
+        context = {
+            "dicom_message": dicom_message
+        }
         return render(request, 'tech_forms/form_submitted.html', context)
     else:
-        return render(request, 'tech_forms/form_submitted.html', context)
+        context = {
+            "form": form,
+            "errors": errors
+        }
+
+        return render(request, 'tech_forms/tech_form.html', context)
 
 
 def query_worklist(request):

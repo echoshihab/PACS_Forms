@@ -121,3 +121,9 @@ td {
 	text-align: center;
 	background: rgba(235, 239, 239, 1);
 }
+
+
+.errorlist {
+	list-style: none;
+	color: red;
+}
