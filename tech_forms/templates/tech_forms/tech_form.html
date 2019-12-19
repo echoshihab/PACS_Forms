@@ -1,10 +1,9 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Tech Form</title>
-	<link rel="stylesheet" type="text/css" href="{% static 'tech_forms/style.css' %}">
-</head>
+{% extends 'tech_forms\base.html' %}
+
+	<title>{% block title %}Tech Form{% endblock %}</title>
+
+
+{% block content %}
 <body>
 <div class="header">
 Technologist Form (Manual Input)
@@ -24,4 +23,5 @@ Technologist Form (Manual Input)
 <a href="{% url 'home' %}">Return to homepage </a>
 </div>
 </body>
-</html>
+{% endblock %}
+

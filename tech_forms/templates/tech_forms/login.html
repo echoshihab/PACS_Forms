@@ -1,12 +1,8 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Admin Login PAge</title>
-		<link rel="stylesheet" type="text/css" href="{% static 'tech_forms/style.css' %}">
-</head>
-<body>
+{% extends 'tech_forms/base.html' %}
 
+<title>{% block title %} Admin Login {% endblock %}</title>
+
+{% block content %}
 <div class="header">
  	Admin Login Form
 </div>
@@ -31,5 +27,4 @@
 <a href="{% url 'home' %}">Return to homepage </a>
 </div>
 
-</body>
-</html>
+{% endblock %}

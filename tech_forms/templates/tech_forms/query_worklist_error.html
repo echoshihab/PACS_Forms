@@ -1,26 +1,23 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Query Worklist</title>
-	<link rel="stylesheet" type="text/css" href="{% static 'tech_forms/style.css' %}">
+{% extends 'tech_forms/base.html' %}
 
-</head>
-<body>
+<title>{% block title %}Query Worklist{% endblock %}</title>
 
+
+{% block content %}
 <div class="wrapper">
 	<div class="tech-form">
 	<em> Please review the details below and contact your PACS Administrator if you need assistance. </em>
 	</div>
 	<div class="tech-form">
 		<strong>Error Details</strong>: {{error}}
+
 	</div>
 </div>
 
 <div class="footer">
 <a href="{% url 'home' %}">Return to homepage </a>
+<a style="margin-left: 10px" href= "{% url 'query_worklist' %}">Return to Query Worklist</a>
 </div>
 
 
-</body>
-</html>
+{% endblock %}
