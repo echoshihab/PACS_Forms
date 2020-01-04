@@ -19,22 +19,10 @@ def server_config(request):
             destination_ip = request.POST.get('destination_ip')
             destination_port = request.POST.get('destination_port')
 
-            worklist_configs = WorklistConfigs.objects.get(id=1)
-            destination_configs = DestinationConfigs.objects.get(id=1)
-            workstation_configs = WorkstationConfigs.objects.get(id=1)
+            worklist_configs, _ = WorklistConfigs.objects.update_or_create(id=1, defaults={'worklist_ae': worklist_ae, 'worklist_ip': worklist_ip, 'worklist_port': worklist_port})
+            destination_configs, _ = DestinationConfigs.update_or_create(id=1, defaults={'destination_ae': destination_ae, 'destination_ip': destination_ip, 'destination_port': destination_port})
+            workstation_configs, _ = WorkstationConfigs.objects.update_or_create(id=1, defaults={'workstation_ae': workstation_ae})
 
-            worklist_configs.worklist_ae = worklist_ae
-            worklist_configs.worklist_ip = worklist_ip
-            worklist_configs.worklist_port = worklist_port
-            worklist_configs.save()
-
-            destination_configs.destination_ae = destination_ae
-            destination_configs.destination_ip = destination_ip
-            destination_configs.destination_port = destination_port
-            destination_configs.save()
-
-            workstation_configs.workstation_ae = workstation_ae
-            workstation_configs.save()
 
             server_config_form = ServerConfigForm(
                 initial={'worklist_ae': worklist_ae,
@@ -65,10 +53,10 @@ def server_config(request):
         else:
             # existing config for worklist, storage destination and
             # workstations
-            worklist_configs = WorklistConfigs.objects.get(id=1)
-            destination_configs = DestinationConfigs.objects.get(id=1)
-            workstation_configs = WorkstationConfigs.objects.get(id=1)
 
+            worklist_configs, _ = WorklistConfigs.objects.get_or_create(id=1,defaults={'worklist_ae': '', 'worklist_ip': '0.0.0.0', 'worklist_port': 0}) 
+            destination_configs, _ = DestinationConfigs.objects.get_or_create(id=1, defaults={'destination_ae': '', 'destination_ip': '0.0.0.0', 'destination_port': 0}) 
+            workstation_configs, _ = WorkstationConfigs.objects.get_or_create(id=1, defaults={'workstation_ae': ''}) 
             # forms for submitting changes to worklist, storage destination and
             # workstations
             server_config_form = ServerConfigForm(
